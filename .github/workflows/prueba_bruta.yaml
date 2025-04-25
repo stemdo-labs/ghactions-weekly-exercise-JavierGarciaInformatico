@@ -65,7 +65,17 @@ jobs:
             echo "Fallo detectado"
           fi
 
-      - name: Desplegar en UAT si no es producción
+      - name: desplegar en UAT si no es producción
         if: ${{ github.event.inputs.PRODUCCION != 'si' }}
         run: |
           echo "desplegando UAT sin tests con la imagen ${{ vars.DOCKERUSER }}/enbruto:${{ github.event.inputs.VERSION }}"
+
+  limpieza-final:
+      runs-on: [weeklyjaviergarcia]
+      if: always()  # asegura que este job se ejecute siempre haya fallado o no antes otros
+      steps:
+        - name: elimina el contenedor de pruebas
+          run: docker rm -f pruebas
+        
+        - name: elimina la imagen de enbruto
+          run: docker rmi ${{ vars.DOCKERUSER }}/enbruto:${{ github.event.inputs.VERSION }} || true
