@@ -144,9 +144,20 @@ Hay que tener en cuenta una cosa **MUY IMPORTANTE** y es que el contenedor si no
 
 ![](/solucion/imagenes/weekly_16.png)
 
-esto hay que tenerlo muy en cuenta para borrar todo lo que queramos antes de que finalice el `workflow` o de lo contrario tendremos problemas en siguiente ejecuciones con el nombre del contenedor, las imagenes da un poco más de igual pero aún así también lo limpiaré, esto lo haremos en un `job` que no dependa de nadie así se hará la limpieza si o si al finalizar el `workflow`
+esto hay que tenerlo muy en cuenta para borrar todo lo que queramos antes de que finalice el `workflow` o de lo contrario tendremos problemas en siguiente ejecuciones con el nombre del contenedor, las imagenes da un poco más de igual pero aún así también lo limpiaré, esto lo haremos en un `job` que dependa del de `cd` pero que de igual si ha fallado o no así se hará la limpieza necesaria si o si al finalizar el `workflow`
 
+Lo conseguimos con estas líneas
 
+```yaml
+    needs: job-cd
+    if: always() 
+```
+
+con `if: always()` ponemos que da igual si ha fallado el `needs` ya que por defecto si falla no se hace, forcé un error poniendo que exista ya el contenedor de `pruebas` así se ve el error real de por qué es necesaria la limpieza
+
+![](/solucion/imagenes/weekly_18.png)
+
+![](/solucion/imagenes/weekly_17.png)
 
 
 
