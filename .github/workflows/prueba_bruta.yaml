@@ -19,12 +19,11 @@ on:
 
 jobs:
   job-ci:
-    runs-on: javierinformatico
+    runs-on: [weeklyjaviergarcia]
     steps:
       - name: Checkout del código
-        uses: actions/checkout@v3
-
-      - name: Construir la imagen Docker
+        uses: actions/checkout@v4
+      - name: construir la imagen Docker
         run: |
           # Si se especifica una versión, se utiliza esa. Si no, se usa el hash del commit.
           docker build -t $DOCKERUSER/enbruto:${{ github.event.inputs.VERSION }} .
@@ -38,18 +37,13 @@ jobs:
           docker push $DOCKERUSER/enbruto:${{ github.event.inputs.VERSION }}
 
   job-cd:
-    runs-on: javierinformatico
+    runs-on: [weeklyjaviergarcia]
     needs: job-ci
     steps:
-      - name: Checkout del código
-        uses: actions/checkout@v3
-
-      - name: Desplegar
+      - name: Desplegar (simulado)
         run: |
           if [ "${{ github.event.inputs.PRODUCCION }}" == "si" ]; then
-            echo "Desplegando a Producción con la imagen $DOCKERUSER/enbruto:${{ github.event.inputs.VERSION }}"
-            # Aquí agregarías el comando para desplegar en producción
+            echo "desplegando a Producción con la imagen $DOCKERUSER/enbruto:${{ github.event.inputs.VERSION }}"
           else
-            echo "Desplegando a UAT con la imagen $DOCKERUSER/enbruto:${{ github.event.inputs.VERSION }}"
-            # Aquí agregarías el comando para desplegar en UAT
+            echo "desplegando a UAT con la imagen $DOCKERUSER/enbruto:${{ github.event.inputs.VERSION }}"
           fi
