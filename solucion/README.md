@@ -14,10 +14,28 @@ Antes comentar que todo esto lo hice en un runner propio, es sencillo de enlazar
 
 realizamos todos esos comandos en nuestra máquina virtual
 
+![](/solucion/imagenes/weekly_4.png)
+
+Configuramos el runner
+
+![](/solucion/imagenes/weekly_5.png)
+
+Y por último lo iniciamos con el siguiente comando (comando importante ya que si apagamos la máquina deberemos de volver a ejecutarlo, la configuración ya si está guardada)
+
+```bash
+./run.sh
+```
+
+![](/solucion/imagenes/weekly_6.png)
+
+Probamos con un `workflow` básico para ver que usa el `runner`, dejaré el `workflow` comentado 
+
+![](/solucion/imagenes/weekly_7.png)
+
+Vale pues así ya podemos usar nuestro propio `runner` así no uso horas de `ubuntu_latest`
 
 
 
-Vamos a ir paso por paso para explicar cada archivo, pero antes voy a hacerlo en "bruto" es decir que haré todas las tareas en sólo 1 y una vez vea que todo funciona bien lo iré separando
 
 
 

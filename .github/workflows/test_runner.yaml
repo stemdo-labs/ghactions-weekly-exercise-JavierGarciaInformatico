@@ -1,8 +1,9 @@
 name: test-runner
 
 on:
-  push:
-
+   workflow_dispatch:
+#  push:
+  
 jobs:
   test:
     runs-on: [weeklyjaviergarcia]
