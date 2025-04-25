@@ -25,8 +25,7 @@ jobs:
         uses: actions/checkout@v4
       - name: construir la imagen Docker
         run: |
-          # Si se especifica una versión, se utiliza esa. Si no, se usa el hash del commit.
-          docker build -t $DOCKERUSER/enbruto:${{ github.event.inputs.VERSION }} .
+          docker build -t ${{vars.DOCKERUSER}}/enbruto:${{ github.event.inputs.VERSION }} .
 
       - name: Iniciar sesión en Docker Hub
         run: |
@@ -34,7 +33,7 @@ jobs:
 
       - name: Subir la imagen Docker a Docker Hub
         run: |
-          docker push $DOCKERUSER/enbruto:${{ github.event.inputs.VERSION }}
+          docker push ${{vars.DOCKERUSER}}/enbruto:${{ github.event.inputs.VERSION }}
 
   job-cd:
     runs-on: [weeklyjaviergarcia]
@@ -43,7 +42,7 @@ jobs:
       - name: Desplegar (simulado)
         run: |
           if [ "${{ github.event.inputs.PRODUCCION }}" == "si" ]; then
-            echo "desplegando a Producción con la imagen $DOCKERUSER/enbruto:${{ github.event.inputs.VERSION }}"
+            echo "desplegando a Producción con la imagen ${{vars.DOCKERUSER}}/enbruto:${{ github.event.inputs.VERSION }}"
           else
-            echo "desplegando a UAT con la imagen $DOCKERUSER/enbruto:${{ github.event.inputs.VERSION }}"
+            echo "desplegando a UAT con la imagen ${{vars.DOCKERUSER}}/enbruto:${{ github.event.inputs.VERSION }}"
           fi
