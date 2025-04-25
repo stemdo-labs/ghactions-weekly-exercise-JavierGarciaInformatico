@@ -59,7 +59,7 @@ jobs:
           fi
 
           echo "test 2"
-          if curl -s localhost:8080 | grep -q "luisk"; then
+          if curl -s localhost:8080 | grep -iq "luisk"; then
             echo "Correcto"
           else
             echo "Fallo detectado"

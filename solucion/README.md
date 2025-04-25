@@ -132,7 +132,23 @@ docker run -p 8080:8080 javiergarciainformatico/enbruto:1
 
 ![](/solucion/imagenes/weekly_13.png)
 
-Bien! todo salio correcto, Ahora podremos probar con la versión completa de CI osea arrancando el contenedor y comprobando 2 tests que me he inventado
+Bien! todo salio correcto, Ahora podremos probar con la versión completa de CI osea arrancando el contenedor y comprobando 2 tests que me he inventado para eso lo ponemos en modo `producción`
+
+![](/solucion/imagenes/weekly_14.png)
+
+Vemos que me da un fallo en el test 2 es porque en el `html` está como `Luisk` con mayúsculas, este test lo dejare a propósito para cuando veamos el uso diferentes `workflows` se pueda ver un test fallido
+
+![](/solucion/imagenes/weekly_15.png)
+
+Hay que tener en cuenta una cosa **MUY IMPORTANTE** y es que el contenedor si no lo paramos en el `workflow` seguirá en funcionamiento, y también sus imágenes descargadas.
+
+![](/solucion/imagenes/weekly_16.png)
+
+esto hay que tenerlo muy en cuenta para borrar todo lo que queramos antes de que finalice el `workflow` o de lo contrario tendremos problemas en siguiente ejecuciones con el nombre del contenedor, las imagenes da un poco más de igual pero aún así también lo limpiaré, esto lo haremos en un `job` que no dependa de nadie así se hará la limpieza si o si al finalizar el `workflow`
+
+
+
+
 
 
 
