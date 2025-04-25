@@ -1,15 +1,15 @@
-name: flujo en bruto
+name: funcionamiento en bruto
 
 on:
   workflow_dispatch:
     inputs:
       PRODUCCION:
-        description: 'Desplegar en producción (si/no)'
+        description: 'desplegar en producción (si/no)'
         required: true
         default: 'no'
       VERSION:
-        description: 'Versión de la imagen Docker (opcional)'
-        required: false
+        description: 'versión de la imagen Docker'
+        required: true
         default: '1'
 
 #   push:

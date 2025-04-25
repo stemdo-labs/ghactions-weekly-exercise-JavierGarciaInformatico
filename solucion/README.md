@@ -34,6 +34,19 @@ Probamos con un `workflow` básico para ver que usa el `runner`, dejaré el `wor
 
 Vale pues así ya podemos usar nuestro propio `runner` así no uso horas de `ubuntu_latest`
 
+Procedemos a generar el tocken de docker
+
+![](/solucion/imagenes/weekly_8.png)
+
+De momento voy a poner el token y el nombre de usuario en variables, no de entorno, cuando vea que funciona correctamente pondré el repositorio público y procederé a crear los `environments` 
+
+
+
+
+
+
+
+
 
 
 
