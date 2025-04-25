@@ -1,5 +1,8 @@
 # Solución
 
+## índice
+
+
 Primero antes de nada, yo en otros ejercicios estaba siempre trabajando con la rama de `JavierGarciaExercises` y en este caso vamos a trabajar con la rama de `development` que es un requisito de una de las ramas que nos piden, asi mato 2 pajaros de un tiro
 
 ![](/solucion/imagenes/weekly_1.png)
@@ -34,7 +37,7 @@ Y por último lo iniciamos con el siguiente comando (comando importante ya que s
 sudo usermod -aG docker $USER
 ```
 
-y cerramos sesión y volvemos a iniciar para que se carguen los cambios
+Cerramos sesión y volvemos a iniciar para que se carguen los cambios
 
 Probamos con un `workflow` básico para ver que usa el `runner`, dejaré el `workflow` comentado 
 
@@ -47,6 +50,13 @@ Procedemos a generar el tocken de docker
 ![](/solucion/imagenes/weekly_8.png)
 
 De momento voy a poner el token y el nombre de usuario en variables, no de entorno, cuando vea que funciona correctamente pondré el repositorio público y procederé a crear los `environments` 
+
+Probemos si crea bien la imagen:
+
+![](/solucion/imagenes/weekly_9.png)
+
+documentación docker login https://github.com/docker/login-action
+
 
 
 
