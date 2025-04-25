@@ -51,11 +51,89 @@ Procedemos a generar el tocken de docker
 
 De momento voy a poner el token y el nombre de usuario en variables, no de entorno, cuando vea que funciona correctamente pondré el repositorio público y procederé a crear los `environments` 
 
-Probemos si crea bien la imagen:
+Vamos a ver nuestro `yaml` de `prueba_bruta.yaml` en el que simplemente probamos a subir una imagen en `docker` para ver su funcionamiento
+
+```yaml
+name: funcionamiento en bruto
+
+on:
+  workflow_dispatch:
+    inputs:
+      PRODUCCION:
+        description: 'desplegar en producción (si/no)'
+        required: true
+        default: 'no'
+      VERSION:
+        description: 'versión de la imagen Docker'
+        required: true
+        default: '1'
+
+#   push:
+#     branches:
+#       - main
+#       - development
+
+jobs:
+  job-ci:
+    runs-on: [weeklyjaviergarcia]
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+      - name: construir la imagen Docker
+        run: |
+          docker build -t ${{vars.DOCKERUSER}}/enbruto:${{ github.event.inputs.VERSION }} .
+
+#https://github.com/docker/login-action
+
+      - name: Login a Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERUSER }}
+          password: ${{ secrets.DOCKERTOKEN }}
+      
+      - name: Subir la imagen Docker a Docker Hub
+        run: |
+          docker push ${{vars.DOCKERUSER}}/enbruto:${{ github.event.inputs.VERSION }}
+
+  job-cd:
+    runs-on: [weeklyjaviergarcia]
+    needs: job-ci
+    steps:
+      - name: Desplegar (simulado)
+        run: |
+          if [ "${{ github.event.inputs.PRODUCCION }}" == "si" ]; then
+            echo "desplegando a Producción con la imagen ${{vars.DOCKERUSER}}/enbruto:${{ github.event.inputs.VERSION }}"
+          else
+            echo "desplegando a UAT con la imagen ${{vars.DOCKERUSER}}/enbruto:${{ github.event.inputs.VERSION }}"
+          fi
+```
+
+Realmente aquí sólo hago la imagen, no compruebo que luego se pueda usar bien, eso lo voy a hacer manualmente una vez se suba, lo importante de este `yaml` sería la parte de `docker/login-action@v3` que es una action personalizada oficial de `docker` par loguearse de forma segura, así cuando termina el `workflow` borra la sesión para prevenir ataques. [aquí dejo la documentación](https://github.com/docker/login-action)
+
+Probemos si crea bien la imagen, para ello debemos de ejecutar el `workflow` manualmente pues es `dispatch` con modo producción:
+
+![](/solucion/imagenes/weekly_10.png)
 
 ![](/solucion/imagenes/weekly_9.png)
 
-documentación docker login https://github.com/docker/login-action
+Vemos que se subió correctamente, por lo cual la parte de simular un despliegue salió bien
+
+![](/solucion/imagenes/weekly_11.png)
+
+Veamos si se subió en `docker hub`
+
+![](/solucion/imagenes/weekly_12.png)
+
+Por último como prueba final vamos a ver que pasa si arrancamos el contenedor con el comando:
+
+```bash
+docker run -p 8080:8080 javiergarciainformatico/enbruto:1
+```
+
+![](/solucion/imagenes/weekly_13.png)
+
+Bien! todo salio correcto, Ahora podremos probar con la versión completa de CI osea arrancando el contenedor y comprobando 2 tests que me he inventado
+
 
 
 

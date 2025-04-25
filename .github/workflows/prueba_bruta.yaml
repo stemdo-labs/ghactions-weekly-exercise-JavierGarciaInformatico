@@ -43,10 +43,29 @@ jobs:
     runs-on: [weeklyjaviergarcia]
     needs: job-ci
     steps:
-      - name: Desplegar (simulado)
+      - name: run de contenedor de pruebas
+        run: docker run -d -p 8080:8080 --name pruebas ${{ vars.DOCKERUSER }}/enbruto:${{ github.event.inputs.VERSION }}
+
+      - name: test en producción
+        if: ${{ github.event.inputs.PRODUCCION == 'si' }}
         run: |
-          if [ "${{ github.event.inputs.PRODUCCION }}" == "si" ]; then
-            echo "desplegando a Producción con la imagen ${{vars.DOCKERUSER}}/enbruto:${{ github.event.inputs.VERSION }}"
+          echo "realizando pruebas en producción..."
+
+          echo "test 1"
+          if curl -o /dev/null -s -w "%{http_code}" localhost:8080 | grep -q "200"; then
+            echo "Correcto"
           else
-            echo "desplegando a UAT con la imagen ${{vars.DOCKERUSER}}/enbruto:${{ github.event.inputs.VERSION }}"
+            echo "Fallo detectado"
           fi
+
+          echo "test 2"
+          if curl -s localhost:8080 | grep -q "luisk"; then
+            echo "Correcto"
+          else
+            echo "Fallo detectado"
+          fi
+
+      - name: Desplegar en UAT si no es producción
+        if: ${{ github.event.inputs.PRODUCCION != 'si' }}
+        run: |
+          echo "desplegando UAT sin tests con la imagen ${{ vars.DOCKERUSER }}/enbruto:${{ github.event.inputs.VERSION }}"
