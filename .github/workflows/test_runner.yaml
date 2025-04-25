@@ -1,0 +1,12 @@
+name: test-runner
+
+on:
+   workflow_dispatch:
+#  push:
+  
+jobs:
+  test:
+    runs-on: [weeklyjaviergarcia]
+    steps:
+      - name: Prueba runner
+        run: echo "el runner está funcionando"

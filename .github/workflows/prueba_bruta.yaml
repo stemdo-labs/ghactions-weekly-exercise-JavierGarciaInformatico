@@ -1,0 +1,55 @@
+name: funcionamiento en bruto
+
+on:
+  workflow_dispatch:
+    inputs:
+      PRODUCCION:
+        description: 'desplegar en producción (si/no)'
+        required: true
+        default: 'no'
+      VERSION:
+        description: 'versión de la imagen Docker'
+        required: true
+        default: '1'
+
+#   push:
+#     branches:
+#       - main
+#       - development
+
+jobs:
+  job-ci:
+    runs-on: javierinformatico
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v3
+
+      - name: Construir la imagen Docker
+        run: |
+          # Si se especifica una versión, se utiliza esa. Si no, se usa el hash del commit.
+          docker build -t $DOCKERUSER/enbruto:${{ github.event.inputs.VERSION }} .
+
+      - name: Iniciar sesión en Docker Hub
+        run: |
+          echo ${{ secrets.DOCKERTOKEN }} | docker login -u ${{ secrets.DOCKERUSER }} --password-stdin
+
+      - name: Subir la imagen Docker a Docker Hub
+        run: |
+          docker push $DOCKERUSER/enbruto:${{ github.event.inputs.VERSION }}
+
+  job-cd:
+    runs-on: javierinformatico
+    needs: job-ci
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v3
+
+      - name: Desplegar
+        run: |
+          if [ "${{ github.event.inputs.PRODUCCION }}" == "si" ]; then
+            echo "Desplegando a Producción con la imagen $DOCKERUSER/enbruto:${{ github.event.inputs.VERSION }}"
+            # Aquí agregarías el comando para desplegar en producción
+          else
+            echo "Desplegando a UAT con la imagen $DOCKERUSER/enbruto:${{ github.event.inputs.VERSION }}"
+            # Aquí agregarías el comando para desplegar en UAT
+          fi
