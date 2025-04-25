@@ -28,6 +28,14 @@ Y por último lo iniciamos con el siguiente comando (comando importante ya que s
 
 ![](/solucion/imagenes/weekly_6.png)
 
+**IMPORTANTE** si vamos a usar `docker` deberemos instalarlo antes en el `runner` de lo contrario no nos funcionará ya que no encontrará el comando, y con el usuario que ejecutemos el `run.sh` habrá que darle permisos metiendolo en el grupo de `docker` para que use el `docker engine` con el siguiente comando:
+
+```bash
+sudo usermod -aG docker $USER
+```
+
+y cerramos sesión y volvemos a iniciar para que se carguen los cambios
+
 Probamos con un `workflow` básico para ver que usa el `runner`, dejaré el `workflow` comentado 
 
 ![](/solucion/imagenes/weekly_7.png)
