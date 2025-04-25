@@ -63,6 +63,7 @@ jobs:
             echo "Correcto"
           else
             echo "Fallo detectado"
+            exit 1
           fi
 
       - name: desplegar en UAT si no es producción
@@ -72,6 +73,7 @@ jobs:
 
   limpieza-final:
       runs-on: [weeklyjaviergarcia]
+      needs: job-cd
       if: always()  # asegura que este job se ejecute siempre haya fallado o no antes otros
       steps:
         - name: elimina el contenedor de pruebas
