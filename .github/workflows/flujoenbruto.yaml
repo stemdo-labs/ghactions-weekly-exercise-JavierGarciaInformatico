@@ -12,10 +12,10 @@ on:
         required: false
         default: '1'
 
-  push:
-    branches:
-      - main
-      - development
+#   push:
+#     branches:
+#       - main
+#       - development
 
 jobs:
   job-ci:
