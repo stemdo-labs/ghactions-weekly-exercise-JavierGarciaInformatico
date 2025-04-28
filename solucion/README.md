@@ -159,6 +159,15 @@ con `if: always()` ponemos que da igual si ha fallado el `needs` ya que por defe
 
 ![](/solucion/imagenes/weekly_17.png)
 
+Ahora empecemos con el `weekly` en si, antes sólo hemos estado entrenando un poco, ahora hay que separar todo lo que hemos realizado anteriormente en los pasos pertinentes antes explicados en el esquemita
+
+Primero creamos 2 `environment` de desarrollo y de producción, y pongo nombres para lo que será el nombre del contenedor así veremos un uso real de los `environment`
+
+![](/solucion/imagenes/weekly_19.png)
+
+
+
+
 
 
 

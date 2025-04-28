@@ -1,0 +1,40 @@
+name: paso cd
+
+on:
+  workflow_call:
+    inputs:
+      ENTORNO:
+        required: true
+        type: string
+      IMAGEN:
+        required: true
+        type: string
+
+jobs:
+  montar_cd:
+    environment: ${{ inputs.ENTORNO }} 
+    runs-on: [weeklyjaviergarcia]
+    steps:
+      - name: pull de la imagen Docker
+        run: docker pull ${{ vars.DOCKERUSER}}/${{ inputs.IMAGEN }}
+
+      - name: run al contenedor de pruebas
+        run: docker run -d -p 8080:8080 --name ${{ vars.NOMBRE_ENVIRONMENT }} ${{ vars.DOCKERUSER}}/${{ inputs.IMAGEN }}
+
+  job-test-entorno:
+    if: ${{ inputs.ENTORNO == 'produccion' }} 
+    runs-on: [weeklyjaviergarcia]
+    needs: montar_cd
+    steps:
+      - name: realizando tests de entorno
+        run: echo "hola"
+
+  job-test-uat:
+    if: ${{ inputs.ENTORNO == 'desarrollo' }} 
+    runs-on: [weeklyjaviergarcia]
+    needs: montar_cd
+    steps:
+      - name: simular ejecución de tests de UAT
+        run: |
+            echo "dando 5 segundos para pruebas UAT manuales"
+            sleep 5
