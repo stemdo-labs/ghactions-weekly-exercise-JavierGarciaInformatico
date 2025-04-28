@@ -13,12 +13,17 @@ jobs:
     secrets: inherit  # esto hereda los secretos en este trabajo
 
   llamar_cd:
+    # needs: llamar_ci
+    # uses: ./.github/workflows/paso_cd.yaml
+    # with:
+    #   ENTORNO: ${{ github.ref_name == 'main' && 'produccion' || 'desarrollo' }}
+    #   IMAGEN: ${{ needs.llamar_ci.outputs.IMAGEN }}
     needs: llamar_ci
-    uses: ./.github/workflows/paso_cd.yaml
-    with:
-      ENTORNO: ${{ github.ref_name == 'main' && 'produccion' || 'desarrollo' }}
-      IMAGEN: ${{ needs.llamar_ci.outputs.IMAGEN }}
+    runs-on: [weeklyjaviergarcia]
+    steps:
+      - name: Echo de la imagen
+        run: echo "IMAGEN=${{ needs.llamar_ci.outputs.IMAGEN }}"
 
-  limpieza:
-    needs: llamar_cd
-    uses: ./.github/workflows/limpieza.yaml
+#   limpieza:
+#     needs: llamar_cd
+#     uses: ./.github/workflows/limpieza.yaml
