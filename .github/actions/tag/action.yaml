@@ -15,4 +15,5 @@ runs:
       run: |
         VERSION=$(jq -r '.version' package.json)
         composicion="${{ inputs.nombre_imagen }}:${VERSION}"
-        echo "nombre=$TAGGED_IMAGE" >> $GITHUB_OUTPUT
+        echo "nombre=$composicion" >> $GITHUB_OUTPUT
+      shell: bash
