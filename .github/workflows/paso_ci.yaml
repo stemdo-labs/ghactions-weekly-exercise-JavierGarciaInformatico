@@ -36,4 +36,4 @@ jobs:
     #   - name: subiendo la imagen al docker
     #     run: docker push ${{ vars.DOCKERUSER }}/${{ env.nombre }}
       - name: guardar-output
-        run: echo "IMAGEN=${{ steps.taggear.outputs.nombre }}" >> $GITHUB_OUTPUT
+        run: echo "IMAGEN=${{ steps.taggear.outputs.nombre }}" >> $GITHUB_ENV
