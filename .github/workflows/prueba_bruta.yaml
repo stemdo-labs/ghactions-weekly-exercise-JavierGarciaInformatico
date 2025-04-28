@@ -31,9 +31,11 @@ jobs:
 
       - name: Login a Docker Hub
         uses: docker/login-action@v3
+        env:
+            TOKEN: ${{ secrets.DOCKERTOKEN }}
         with:
           username: ${{ vars.DOCKERUSER }}
-          password: ${{ secrets.DOCKERTOKEN }}
+          password: ${{ env.TOKEN }}
       
       - name: Subir la imagen Docker a Docker Hub
         run: |
