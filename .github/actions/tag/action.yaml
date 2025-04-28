@@ -19,7 +19,8 @@ runs:
         composicion="${{ inputs.nombre_imagen }}:${VERSION}"
         echo "nombre=$composicion" >> $GITHUB_ENV 
       shell: bash  
-      
+
     - name: poner output
-      run: echo "nombre=${{ env.nombre }}" >> $GITHUB_OUTPUT
+
+      run: echo "nombre=${{ env.nombre }}" >> $GITHUB_OUTPUT && echo ${{ env.nombre }}
       shell: bash 
