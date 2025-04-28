@@ -165,6 +165,10 @@ Primero creamos 2 `environment` de desarrollo y de producción, y pongo nombres 
 
 ![](/solucion/imagenes/weekly_19.png)
 
+Finalmente lo he partido en 4 `workflows` 1 principal 2 de los pasos `ci` `cd` y uno último de limpieza
+
+
+
 
 
 
