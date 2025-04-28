@@ -6,6 +6,7 @@ inputs:
 
 outputs:
   nombre:
+    description: 'Nombre de la imagen etiquetada'
 
 runs:
   using: "composite"
@@ -15,5 +16,7 @@ runs:
       run: |
         VERSION=$(jq -r '.version' package.json)
         composicion="${{ inputs.nombre_imagen }}:${VERSION}"
-        echo "nombre=$composicion" >> $GITHUB_OUTPUT
-      shell: bash
+        echo "nombre=$composicion" >> $GITHUB_ENV 
+        
+    - name: poner output
+      run: echo "nombre=${{ env.nombre }}" >> $GITHUB_OUTPUT 
