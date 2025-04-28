@@ -22,16 +22,16 @@ jobs:
         with:
           nombre_imagen: jga_angular
 
-      - name: construyendo imagen
-        run: docker build -t ${{ vars.DOCKERUSER }}/${{ env.nombre }} .
+    #   - name: construyendo imagen
+    #     run: docker build -t ${{ vars.DOCKERUSER }}/${{ env.nombre }} .
       
-      - name: Login a Docker Hub
-        uses: docker/login-action@v3
-        env:
-            TOKEN: ${{ secrets.DOCKERTOKEN }}
-        with:
-          username: ${{ vars.DOCKERUSER }}
-          password: ${{ env.TOKEN }}
+    #   - name: Login a Docker Hub
+    #     uses: docker/login-action@v3
+    #     env:
+    #         TOKEN: ${{ secrets.DOCKERTOKEN }}
+    #     with:
+    #       username: ${{ vars.DOCKERUSER }}
+    #       password: ${{ env.TOKEN }}
       
-      - name: subiendo la imagen al docker
-        run: docker push ${{ vars.DOCKERUSER }}/${{ env.nombre }}
+    #   - name: subiendo la imagen al docker
+    #     run: docker push ${{ vars.DOCKERUSER }}/${{ env.nombre }}
