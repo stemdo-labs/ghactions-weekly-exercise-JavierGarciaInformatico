@@ -22,7 +22,7 @@ jobs:
     runs-on: [weeklyjaviergarcia]
     steps:
       - name: Echo de la imagen
-        run: echo "IMAGEN=${{ needs.llamar_ci.outputs.IMAGEN }}"
+        run: echo "${{ needs.llamar_ci.outputs.IMAGEN }}"
 
 #   limpieza:
 #     needs: llamar_cd
