@@ -24,11 +24,12 @@ jobs:
 
       - name: construyendo imagen
         run: docker build -t ${{ vars.DOCKERUSER }}/${{ env.nombre }} .
-      - name: login en Docker Hub
+      
+      - name: Login a Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ vars.DOCKERUSER }}
           password: ${{ secrets.DOCKERTOKEN }}
-
+      
       - name: subiendo la imagen al docker
         run: docker push ${{ vars.DOCKERUSER }}/${{ env.nombre }}
