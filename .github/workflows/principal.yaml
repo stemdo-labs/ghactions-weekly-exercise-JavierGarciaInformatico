@@ -10,6 +10,7 @@ on:
 jobs:
   llamar_ci:
     uses: ./.github/workflows/paso_ci.yaml
+    secrets: inherit  # esto hereda los secretos en este trabajo
 
   llamar_cd:
     needs: llamar_ci
@@ -17,7 +18,7 @@ jobs:
     with:
       ENTORNO: ${{ github.ref_name == 'main' && 'produccion' || 'desarrollo' }}
       IMAGEN: ${{ needs.llamar_ci.outputs.IMAGEN }}
-      
+
   limpieza:
     needs: llamar_cd
     uses: ./.github/workflows/limpieza.yaml
