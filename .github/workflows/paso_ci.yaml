@@ -9,7 +9,7 @@ on:
 jobs:
   job-ci:
     outputs:
-        IMAGEN: ${{ steps.taggear.outputs.nombre }}
+        IMAGEN: ${{ steps.guardado.outputs.IMAGEN }}
 
     runs-on: [weeklyjaviergarcia]
     steps:
@@ -36,4 +36,7 @@ jobs:
     #   - name: subiendo la imagen al docker
     #     run: docker push ${{ vars.DOCKERUSER }}/${{ env.nombre }}
       - name: guardar-output
-        run: echo "IMAGEN=${{ env.nombre }}" >> $GITHUB_OUTPUT
+        id: guardado
+        run: |
+           echo ${{ env.nombre }}
+           echo "IMAGEN=${{ env.nombre }}" >> $GITHUB_OUTPUT
