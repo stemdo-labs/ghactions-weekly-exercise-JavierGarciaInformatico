@@ -1,0 +1,14 @@
+name: verificar Estado HTTP 200
+
+runs:
+  using: "composite"
+  steps:
+    - name: verificar que la respuesta HTTP es 200
+      run: |
+        if curl -o /dev/null -s -w "%{http_code}" localhost:8080 | grep -q "200"; then
+          echo "Correcto"
+        else
+          echo "Fallo detectado"
+          exit 1
+        fi
+      shell: bash  

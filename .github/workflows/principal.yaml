@@ -21,4 +21,6 @@ jobs:
 
   limpieza:
     needs: llamar_cd
+     # aunque falle cd lo hace
+    if: always()   
     uses: ./.github/workflows/limpieza.yaml

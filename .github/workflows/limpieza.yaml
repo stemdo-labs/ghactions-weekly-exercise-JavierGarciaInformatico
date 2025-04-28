@@ -6,10 +6,9 @@ on:
 jobs:
   limpieza-docker:
     runs-on: [weeklyjaviergarcia]
-    if: always() 
     steps:
-      - name: Eliminar todos los contenedores
+      - name: eliminar todos los contenedores
         run: docker rm -f $(docker ps -a -q)
 
       - name: eliminar todas las imágenes
-        run: docker system prune -a
+        run: docker system prune -a -f
