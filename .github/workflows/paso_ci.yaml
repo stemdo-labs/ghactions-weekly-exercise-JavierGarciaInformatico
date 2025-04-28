@@ -1,0 +1,42 @@
+name: paso ci
+
+on:
+  workflow_call:
+    outputs:
+        IMAGEN:
+            value: ${{ jobs.job-ci.outputs.IMAGEN }}
+
+jobs:
+  job-ci:
+    outputs:
+        IMAGEN: ${{ steps.guardado.outputs.IMAGEN }}
+
+    runs-on: [weeklyjaviergarcia]
+    steps:
+      - name: cargamos repositorio
+        uses: actions/checkout@v4
+
+      - name: taggeando la imagen de docker
+        id: taggear
+        uses: ./.github/actions/tag
+        with:
+          nombre_imagen: jga_angular
+
+      - name: construyendo imagen
+        run: docker build -t ${{ vars.DOCKERUSER }}/${{ env.nombre }} .
+      
+      - name: Login a Docker Hub
+        uses: docker/login-action@v3
+        env:
+            TOKEN: ${{ secrets.DOCKERTOKEN }}
+        with:
+          username: ${{ vars.DOCKERUSER }}
+          password: ${{ env.TOKEN }}
+      
+      - name: subiendo la imagen al docker
+        run: docker push ${{ vars.DOCKERUSER }}/${{ env.nombre }}
+      - name: guardar-output
+        id: guardado
+        run: |
+           echo ${{ env.nombre }}
+           echo "IMAGEN=${{ env.nombre }}" >> $GITHUB_OUTPUT

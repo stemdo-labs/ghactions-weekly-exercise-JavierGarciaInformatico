@@ -1,0 +1,14 @@
+name: limpieza
+
+on:
+  workflow_call:  
+
+jobs:
+  limpieza-docker:
+    runs-on: [weeklyjaviergarcia]
+    steps:
+      - name: eliminar todos los contenedores
+        run: docker rm -f $(docker ps -a -q)
+
+      - name: eliminar todas las imágenes
+        run: docker system prune -a -f

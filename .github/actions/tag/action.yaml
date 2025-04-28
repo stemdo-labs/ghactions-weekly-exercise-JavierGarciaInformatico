@@ -1,0 +1,26 @@
+name: tag a imagen
+
+inputs:
+  nombre_imagen:
+    required: true
+
+outputs:
+  nombre:
+    description: 'Nombre de la imagen etiquetada'
+    value: ${{ steps.version.outputs.nombre }} 
+
+runs:
+  using: "composite"
+  steps:
+    - name: crear tag del package.json
+      id: version
+      run: |
+        VERSION=$(jq -r '.version' package.json)
+        composicion="${{ inputs.nombre_imagen }}:${VERSION}"
+        echo "nombre=$composicion" >> $GITHUB_ENV 
+      shell: bash  
+
+    - name: poner output
+
+      run: echo "nombre=${{ env.nombre }}" >> $GITHUB_OUTPUT && echo ${{ env.nombre }}
+      shell: bash 

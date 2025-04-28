@@ -27,10 +27,16 @@ jobs:
         run: |
           docker build -t ${{vars.DOCKERUSER}}/enbruto:${{ github.event.inputs.VERSION }} .
 
-      - name: Iniciar sesión en Docker Hub
-        run: |
-          echo ${{ secrets.DOCKERTOKEN }} | docker login -u ${{ secrets.DOCKERUSER }} --password-stdin
+#https://github.com/docker/login-action
 
+      - name: Login a Docker Hub
+        uses: docker/login-action@v3
+        env:
+            TOKEN: ${{ secrets.DOCKERTOKEN }}
+        with:
+          username: ${{ vars.DOCKERUSER }}
+          password: ${{ env.TOKEN }}
+      
       - name: Subir la imagen Docker a Docker Hub
         run: |
           docker push ${{vars.DOCKERUSER}}/enbruto:${{ github.event.inputs.VERSION }}
@@ -39,10 +45,41 @@ jobs:
     runs-on: [weeklyjaviergarcia]
     needs: job-ci
     steps:
-      - name: Desplegar (simulado)
+      - name: run de contenedor de pruebas
+        run: docker run -d -p 8080:8080 --name pruebas ${{ vars.DOCKERUSER }}/enbruto:${{ github.event.inputs.VERSION }}
+
+      - name: test en producción
+        if: ${{ github.event.inputs.PRODUCCION == 'si' }}
         run: |
-          if [ "${{ github.event.inputs.PRODUCCION }}" == "si" ]; then
-            echo "desplegando a Producción con la imagen ${{vars.DOCKERUSER}}/enbruto:${{ github.event.inputs.VERSION }}"
+          echo "realizando pruebas en producción..."
+
+          echo "test 1"
+          if curl -o /dev/null -s -w "%{http_code}" localhost:8080 | grep -q "200"; then
+            echo "Correcto"
           else
-            echo "desplegando a UAT con la imagen ${{vars.DOCKERUSER}}/enbruto:${{ github.event.inputs.VERSION }}"
+            echo "Fallo detectado"
           fi
+
+          echo "test 2"
+          if curl -s localhost:8080 | grep -iq "luisk"; then
+            echo "Correcto"
+          else
+            echo "Fallo detectado"
+            exit 1
+          fi
+
+      - name: desplegar en UAT si no es producción
+        if: ${{ github.event.inputs.PRODUCCION != 'si' }}
+        run: |
+          echo "desplegando UAT sin tests con la imagen ${{ vars.DOCKERUSER }}/enbruto:${{ github.event.inputs.VERSION }}"
+
+  limpieza-final:
+      runs-on: [weeklyjaviergarcia]
+      needs: job-cd
+      if: always()  # asegura que este job se ejecute siempre haya fallado o no antes otros
+      steps:
+        - name: elimina el contenedor de pruebas
+          run: docker rm -f pruebas
+        
+        - name: elimina la imagen de enbruto
+          run: docker rmi ${{ vars.DOCKERUSER }}/enbruto:${{ github.event.inputs.VERSION }} || true

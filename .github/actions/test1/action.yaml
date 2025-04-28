@@ -1,0 +1,14 @@
+name: verificar página en Producción
+
+runs:
+  using: "composite"
+  steps:
+    - name: ver si la página contiene "Luisk"
+      run: |
+        if curl -s localhost:8080 | grep -q "Luisk"; then
+          echo "Correcto"
+        else
+          echo "Fallo detectado"
+          exit 1
+        fi
+      shell: bash  
