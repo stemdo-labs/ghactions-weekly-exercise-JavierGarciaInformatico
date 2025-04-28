@@ -23,8 +23,7 @@ jobs:
           nombre_imagen: jga_angular
 
       - name: construyendo imagen
-        run: docker build -t ${{ vars.DOCKERUSER }}/${{ steps.taggear.outputs.nombre }} .
-
+        run: docker build -t ${{ vars.DOCKERUSER }}/${{ env.nombre }} .
       - name: login en Docker Hub
         uses: docker/login-action@v3
         with:
@@ -32,4 +31,4 @@ jobs:
           password: ${{ secrets.DOCKERTOKEN }}
 
       - name: subiendo la imagen al docker
-        run: docker push ${{ vars.DOCKERUSER }}/${{ steps.taggear.outputs.nombre }}
+        run: docker push ${{ vars.DOCKERUSER }}/${{ env.nombre }}
